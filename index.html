@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Amma!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://i.ibb.co/ZpMmD18q/bg-1.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      margin-top: 50px;
+      font-size: 2.5em;
+      text-shadow: 2px 2px 4px #000;
+    }
+
+    #musicBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #ffb6c1;
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+
+    .gift-boxes {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      gap: 20px;
+      justify-content: center;
+      margin-top: 50px;
+    }
+
+    .gift {
+      width: 100px;
+      height: 100px;
+      background-color: gold;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+      cursor: pointer;
+      transition: transform 0.3s;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .gift.unlocked {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .gift:hover {
+      transform: scale(1.1);
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #f0f8ff;
+      color: #000;
+      padding: 20px 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #0006;
+      font-size: 1.2em;
+      z-index: 999;
+      max-width: 90%;
+      display: none;
+    }
+
+    .popup button {
+      margin-top: 15px;
+      padding: 5px 15px;
+      font-size: 1em;
+      background-color: #ff69b4;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .celebration {
+      position: fixed;
+      bottom: -100px;
+      font-size: 2.5em;
+      animation: rise 6s infinite;
+      z-index: 100;
+    }
+
+    @keyframes rise {
+      0% { bottom: -100px; opacity: 0; }
+      30% { opacity: 1; }
+      100% { bottom: 110%; opacity: 0; }
+    }
+
+    #allMessages {
+      margin-top: 40px;
+      padding: 20px;
+      background-color: #d9f2ff;
+      border-radius: 15px;
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #allMessages h2 {
+      color: #007acc;
+    }
+
+    #messageList {
+      list-style: none;
+      padding: 0;
+      font-size: 1.2em;
+      color: #000;
+    }
+
+    #messageList li {
+      margin: 10px 0;
+    }
+
+    @media (max-width: 600px) {
+  h1 {
+    font-size: 1.8em;
+    margin-top: 30px;
+  }
+
+  .gift-boxes {
+    grid-template-columns: repeat(2, 90px);
+    gap: 15px;
+  }
+
+  .gift {
+    width: 90px;
+    height: 90px;
+    font-size: 1.8em;
+  }
+
+  .popup {
+    font-size: 1em;
+    padding: 15px 20px;
+  }
+
+  .popup button {
+    font-size: 0.9em;
+    padding: 6px 12px;
+  }
+
+  #allMessages {
+    padding: 15px;
+    width: 90%;
+  }
+
+  #messageList {
+    font-size: 1em;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <h1>🎉 Unlock Your Birthday Gifts, Amma! 🎁</h1>
+
+  <!-- Music start button -->
+  <button id="musicBtn" onclick="startMusic()">🎵 Tap to Play Music and then open your gifts mmy</button>
+
+  <!-- Background music -->
+  <audio id="bgMusic" src="bg-music.mp3" loop></audio>
+  <audio id="clickSound" src="click-sound.mp3"></audio>
+
+  <div class="gift-boxes" id="gifts">
+    <div class="gift" onclick="unlockGift(0)">🎁</div>
+    <div class="gift" onclick="unlockGift(1)">🎁</div>
+    <div class="gift" onclick="unlockGift(2)">🎁</div>
+    <div class="gift" onclick="unlockGift(3)">🎁</div>
+    <div class="gift" onclick="unlockGift(4)">🎁</div>
+    <div class="gift" onclick="unlockGift(5)">🎁</div>
+  </div>
+
+  <div class="popup" id="popupMsg">
+    <div id="popupText"></div>
+    <button onclick="closePopup()">Close</button>
+  </div>
+
+  <!-- Final messages list -->
+  <div id="allMessages" style="display:none;">
+    <h2>All Your Birthday Messages 💖</h2>
+    <ul id="messageList"></ul>
+  </div>
+
+  <script>
+    const messages = [
+      "You’re the heart of our home ❤️",
+      "You are rare and precious like diamonds💎💗",
+      "உங்கள் புன்னகை நட்சத்திரங்களை விட அழகாக ஆகாயத்தை ஒளிரச் செய்கிறது🌠❤️",
+      "One fresh coffee coming soon ☕️",
+      "நம் குடும்பத்தின் சிரிப்பு உங்கள் புன்னகையிலிருந்து தான் தொடங்குகிறது😊🏠",
+      "Final Gift: The 3 Real gifts are there just infront of u mmy! 🤗💖"
+    ];
+
+    let currentIndex = -1;
+    const gifts = document.querySelectorAll('.gift');
+
+    function startMusic() {
+      const music = document.getElementById('bgMusic');
+      music.play().then(() => {
+        document.getElementById('musicBtn').style.display = 'none';
+        gifts[0].classList.add('unlocked'); // Unlock first gift
+      }).catch(() => {
+        alert("Please allow audio permission to play music.");
+      });
+    }
+
+    function unlockGift(index) {
+      if (index !== currentIndex + 1) return;
+      currentIndex = index;
+      document.getElementById('clickSound').play();
+      document.getElementById('popupText').innerText = messages[index];
+      document.getElementById('popupMsg').style.display = 'block';
+    }
+
+    function closePopup() {
+      document.getElementById('popupMsg').style.display = 'none';
+
+      gifts[currentIndex].style.backgroundColor = '#ff69b4';
+
+      const list = document.getElementById('messageList');
+      const li = document.createElement('li');
+      li.textContent = messages[currentIndex];
+      list.appendChild(li);
+
+      if (currentIndex + 1 < gifts.length) {
+        gifts[currentIndex + 1].classList.add('unlocked');
+      }
+
+      if (currentIndex === gifts.length - 1) {
+        releaseBalloons();
+        document.getElementById('allMessages').style.display = 'block';
+      }
+    }
+
+    function releaseBalloons() {
+      for (let i = 0; i < 60; i++) {
+        const balloon = document.createElement('div');
+        balloon.className = 'celebration';
+        balloon.innerText = "🎈";
+        balloon.style.left = Math.random() * 100 + "vw";
+        balloon.style.animationDuration = 3 + Math.random() * 3 + "s";
+        document.body.appendChild(balloon);
+        setTimeout(() => balloon.remove(), 8000);
+      }
+    }
+  </script>
+</body>
+</html>
